@@ -18,7 +18,7 @@ class CreateFightersTable extends Migration {
 			$table->string('identifier');
 			$table->integer('team');
 			$table->integer('hp');
-			$table->integer('battle');
+			$table->integer('battle_id');
             $table->timestamps();
 		});
 	}

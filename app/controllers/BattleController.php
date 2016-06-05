@@ -34,7 +34,11 @@ class BattleController extends \BaseController {
 	 */
 	public function show($id)
 	{
-        return Response::json(Battle::find($id));
+        return Response::json(Battle::with(['fighters'
+			=> function ($query) {
+					$query->orderBy('team');
+				}]
+		)->find($id));
 	}
 
 

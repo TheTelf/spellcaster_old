@@ -1,5 +1,3 @@
-alert('HERE');
-
 angular.module('mainCtrl', [])
 
     // inject the service into our controller
