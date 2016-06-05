@@ -1,6 +1,6 @@
 <?php
 
-class BattleController extends \BaseController {
+class UserController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,7 +9,7 @@ class BattleController extends \BaseController {
 	 */
 	public function index()
 	{
-		return Response::json(Battle::get());
+		return Response::json(User::get());
 	}
 
 
@@ -20,7 +20,7 @@ class BattleController extends \BaseController {
 	 */
 	public function store()
 	{
-		Battle::create(array(
+		User::create(array(
 
 		));
 
@@ -34,25 +34,13 @@ class BattleController extends \BaseController {
 	 */
 	public function show($id)
 	{
-        return Response::json(Battle::with('fighters.user')->find($id));
+        return Response::json(User::find($id));
 
         /*return Response::json(Battle::with(['fighters.user'
 			=> function ($query) {
 					$query->orderBy('fighters.team');
 				}]
 		)->find($id));*/
-	}
-
-	public function takeAction(Request $request, $id)
-	{
-		return true;
-
-		if ($request->spell == null)
-		{
-			//just an attack
-			DB::table('fighters')->decrement('HP', 10)->where('battle_id', $id)->where('id', $request->target);
-		}
-
 	}
 
 

@@ -34,6 +34,15 @@
                         });
                     },
 
+                    action : function(id, target, spell) {
+                        return $http({
+                            method: 'POST',
+                            url: '/api/battles/'+id+'/action',
+                            headers: { 'Content-Type' : 'application/x-www-form-urlencoded' },
+                            data: $.param({target: target, spell: spell})
+                    });
+                    },
+
                 }
 
             });
@@ -69,6 +78,8 @@
            // loading variable to show the spinning loading icon
            $scope.loading = true;
 
+           $scope.actionData = {};
+
            // get all the comments first and bind it to the $scope.comments object
            // use the function we created in our service
            // GET ALL COMMENTS ==============
@@ -77,6 +88,14 @@
                    $scope.battle = data;
                    $scope.loading = false;
                });
+
+           $scope.attack = function() {
+               Battle.action(1, $scope.actionData.target, null);
+           }
+
+           $scope.cast = function() {
+               Battle.action(1, $scope.actionData.target, $scope.actionData.spell);
+           }
        });
 
     </script>
@@ -103,9 +122,19 @@
         <h1>Battle id is #{{battle.id}}</h1>
         <h1>Battle involves the following fighters:</h1>
         <div ng-repeat="fighter in battle.fighters track by fighter.id">
-            <input type="radio" name="target" value="{{fighter.id}}" /> {{fighter.identifier}} ({{fighter.hp}} HP)
+            <input type="radio" name="actionData.target" ng-model="actionData.target" value="{{fighter.id}}" ng-hide="{{fighter.user.id == 1}}"/> {{fighter.identifier}} ({{fighter.hp}} HP)
         </div>
+        <div>Chosen target = {{actionData.target}}</div>
     </div>
 
+    <div>
+        <input type="button" value="Attack" ng-click="attack()">
+    </div>
+    or
+    <div>
+        <input type="spell" ng-model="actionData.spell" value="">
+        <div>Spell: {{actionData.spell}}</div>
+        <input type="button" value="Cast Spell" ng-click="cast()")>
+    </div>
 </body>
 </html>
